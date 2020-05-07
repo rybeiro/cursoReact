@@ -28357,7 +28357,100 @@ var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
 module.hot.accept(reloadCSS);
-},{"_css_loader":"node_modules/parcel-bundler/src/builtins/css-loader.js"}],"index.js":[function(require,module,exports) {
+},{"_css_loader":"node_modules/parcel-bundler/src/builtins/css-loader.js"}],"node_modules/classnames/index.js":[function(require,module,exports) {
+var define;
+/*!
+  Copyright (c) 2017 Jed Watson.
+  Licensed under the MIT License (MIT), see
+  http://jedwatson.github.io/classnames
+*/
+/* global define */
+
+(function () {
+	'use strict';
+
+	var hasOwn = {}.hasOwnProperty;
+
+	function classNames () {
+		var classes = [];
+
+		for (var i = 0; i < arguments.length; i++) {
+			var arg = arguments[i];
+			if (!arg) continue;
+
+			var argType = typeof arg;
+
+			if (argType === 'string' || argType === 'number') {
+				classes.push(arg);
+			} else if (Array.isArray(arg) && arg.length) {
+				var inner = classNames.apply(null, arg);
+				if (inner) {
+					classes.push(inner);
+				}
+			} else if (argType === 'object') {
+				for (var key in arg) {
+					if (hasOwn.call(arg, key) && arg[key]) {
+						classes.push(key);
+					}
+				}
+			}
+		}
+
+		return classes.join(' ');
+	}
+
+	if (typeof module !== 'undefined' && module.exports) {
+		classNames.default = classNames;
+		module.exports = classNames;
+	} else if (typeof define === 'function' && typeof define.amd === 'object' && define.amd) {
+		// register as 'classnames', consistent with npm package name
+		define('classnames', [], function () {
+			return classNames;
+		});
+	} else {
+		window.classNames = classNames;
+	}
+}());
+
+},{}],"node_modules/react-uuid/uuid.js":[function(require,module,exports) {
+/**
+A function that returns a universally unique identifier (uuid).  
+example: 1b83fd69-abe7-468c-bea1-306a8aa1c81d
+@returns `string` : 32 character uuid (see example)
+*/
+function uuid() {
+  const hashTable = [
+    'a',
+    'b',
+    'c',
+    'd',
+    'e',
+    'f',
+    '0',
+    '1',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+    '8',
+    '9'
+  ]
+  let uuid = []
+  for (let i = 0; i < 35; i++) {
+    if (i === 7 || i === 12 || i === 17 || i === 22) {
+      uuid[i] = '-'
+    } else {
+      uuid[i] = hashTable[Math.floor(Math.random() * hashTable.length - 1)]
+    }
+  }
+  return uuid.join('')
+}
+
+module.exports = uuid
+
+},{}],"index.js":[function(require,module,exports) {
 "use strict";
 
 var _react = _interopRequireDefault(require("react"));
@@ -28366,37 +28459,187 @@ var _reactDom = _interopRequireDefault(require("react-dom"));
 
 require("./index.scss");
 
+var _classnames = _interopRequireDefault(require("classnames"));
+
+var _reactUuid = _interopRequireDefault(require("react-uuid"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var App = function App() {
-  return _react.default.createElement("div", {
-    className: "container"
-  }, _react.default.createElement(NewNote, null), _react.default.createElement(ListNote, null));
-};
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-var NewNote = function NewNote() {
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function () { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+var App = /*#__PURE__*/function (_React$Component) {
+  _inherits(App, _React$Component);
+
+  var _super = _createSuper(App);
+
+  function App() {
+    var _this;
+
+    var _temp;
+
+    _classCallCheck(this, App);
+
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _possibleConstructorReturn(_this, (_temp = _this = _super.call.apply(_super, [this].concat(args)), _this.state = {
+      notes: []
+    }, _this.handleAddNote = function (text) {
+      _this.setState(function (prevState) {
+        return {
+          notes: prevState.notes.concat({
+            id: (0, _reactUuid.default)(),
+            text: text
+          })
+        };
+      });
+    }, _this.handleMove = function (direction, index) {
+      _this.setState(function (prevState) {
+        var newNotes = prevState.notes.slice();
+        var removeNotes = newNotes.splice(index, 1)[0];
+
+        if (direction === "up") {
+          newNotes.splice(index - 1, 0, removeNotes);
+        } else {
+          newNotes.splice(index + 1, 0, removeNotes);
+        }
+
+        return {
+          notes: newNotes
+        };
+      });
+    }, _temp));
+  }
+
+  _createClass(App, [{
+    key: "render",
+    value: function render() {
+      return _react.default.createElement("div", {
+        className: "container"
+      }, _react.default.createElement(NewNote, {
+        onAddNote: this.handleAddNote
+      }), _react.default.createElement(NoteList, {
+        notes: this.state.notes,
+        onMove: this.handleMove
+      }));
+    }
+  }]);
+
+  return App;
+}(_react.default.Component);
+
+var NewNote = /*#__PURE__*/function (_React$Component2) {
+  _inherits(NewNote, _React$Component2);
+
+  var _super2 = _createSuper(NewNote);
+
+  function NewNote() {
+    var _this2;
+
+    var _temp2;
+
+    _classCallCheck(this, NewNote);
+
+    for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+      args[_key2] = arguments[_key2];
+    }
+
+    return _possibleConstructorReturn(_this2, (_temp2 = _this2 = _super2.call.apply(_super2, [this].concat(args)), _this2.state = {
+      text: ''
+    }, _temp2));
+  }
+
+  _createClass(NewNote, [{
+    key: "render",
+    value: function render() {
+      var _this3 = this;
+
+      var onAddNote = this.props.onAddNote;
+      var text = this.state.text;
+      return _react.default.createElement("div", {
+        className: "new-note"
+      }, _react.default.createElement("input", {
+        type: "text",
+        className: "new-note__input",
+        placeholder: "Digite sua nota",
+        value: text,
+        onChange: function onChange(event) {
+          return _this3.setState({
+            text: event.target.value
+          });
+        },
+        onKeyPress: function onKeyPress(event) {
+          if (event.key === "Enter") {
+            onAddNote(event.target.value);
+
+            _this3.setState({
+              text: ''
+            });
+          }
+        }
+      }));
+    }
+  }]);
+
+  return NewNote;
+}(_react.default.Component);
+
+var NoteList = function NoteList(_ref) {
+  var notes = _ref.notes,
+      onMove = _ref.onMove;
   return _react.default.createElement("div", {
-    className: "new-note"
-  }, _react.default.createElement("input", {
-    type: "text",
-    className: "new-note__input"
+    className: "note-list"
+  }, notes.map(function (note, index) {
+    return _react.default.createElement("div", {
+      key: note.id,
+      className: "note"
+    }, _react.default.createElement("span", {
+      className: "note__text"
+    }, note.text), _react.default.createElement("button", {
+      className: (0, _classnames.default)("note__button", {
+        "note__button--hidden": index === 0
+      }),
+      onClick: function onClick() {
+        onMove("up", index);
+      }
+    }, _react.default.createElement("span", {
+      "class": "material-icons"
+    }, "keyboard_arrow_up")), _react.default.createElement("button", {
+      className: (0, _classnames.default)("note__button", {
+        "note__button--hidden": index === notes.length - 1
+      }),
+      onClick: function onClick() {
+        onMove("down", index);
+      }
+    }, _react.default.createElement("span", {
+      "class": "material-icons"
+    }, "keyboard_arrow_down")));
   }));
 };
 
-var ListNote = function ListNote() {
-  return _react.default.createElement("div", {
-    className: "note-list"
-  }, _react.default.createElement("div", {
-    className: "note"
-  }, "Teste"), _react.default.createElement("div", {
-    className: "note"
-  }, "Teste"), _react.default.createElement("div", {
-    className: "note"
-  }, "Teste"));
-};
-
 _reactDom.default.render(_react.default.createElement(App, null), document.getElementById("root"));
-},{"react":"node_modules/react/index.js","react-dom":"node_modules/react-dom/index.js","./index.scss":"index.scss"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","react-dom":"node_modules/react-dom/index.js","./index.scss":"index.scss","classnames":"node_modules/classnames/index.js","react-uuid":"node_modules/react-uuid/uuid.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -28424,7 +28667,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55389" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50173" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

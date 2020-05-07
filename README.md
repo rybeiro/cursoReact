@@ -12,7 +12,7 @@ Para instalação execute o comando abaixo. Após a instalação será criado o 
 ```
 npm install react react-dom
 ```
-## Instalando o Bundler 
+## Instalando o Bundler
 O *Bundler* é um empacotador que permite escrever um código modular e depois empacotar em pequenos pacotes otimizados. Os mais conhecidos para Node são: *Webpack e o Parcel*.
 Inicialmente utilizarei o *Parcel* como dependência de desenvolvimento.
 ```
@@ -32,7 +32,7 @@ Crie o arquivo *.babelrc* na raiz do projeto e configuramos com o *preset* que i
   ]
 }
 ```
-### Configurando o package
+### Configurando o package.json
 Configurar o arquivo *package.json* com o *preset*. No objeto *script* vamos limpar o valor e configurar a chave *start* com valor *parcel index.html*
 ```
 "start": "parcel index.html"
@@ -60,3 +60,13 @@ Para utilizar basta criar o arquivo e importar no arquivo *index.js*.
 ```
 import "./index.scss"
 ```
+## Plugins
+Para omitir o uso de construtor para propagar as propriedades
+```
+npm install --save-dev babel-plugins-transform-class-properties
+```
+Para obter um indentação correta vamos utilizar o *Prettier*
+```
+npm install --save-dev --save-exact prettier
+```
+Configurando *Prettier* no seu editor no meu caso estou utilizado o Atom
