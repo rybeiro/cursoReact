@@ -70,3 +70,45 @@ Para obter um indentação correta vamos utilizar o *Prettier*
 npm install --save-dev --save-exact prettier
 ```
 Configurando *Prettier* no seu editor no meu caso estou utilizado o Atom
+
+## Bibliotecas
+**classnames** Esta biblioteca facilita a composição da string a ser usada no className, como o exemplo abaixo com e sem o uso da biblioteca para obter o mesmo resultado:
+```
+import classNames from "classnames";
+<div className="estilo" />
+<div className={classNames("estilo")} />
+<div className="estilo1 estilo2" />
+<div className={classNames("estilo1", "estilo2")} />
+```
+**Diferença está:** Se o estilo vier de uma variável fica mais fácil usar a biblioteca, pois ela ignora valores como null, undefined, false, 0 e string vazia.
+
+É possível também usar condicionais através de objetos:
+```
+classNames({ "button--disabled": true });
+classNames({ "button--disabled": false });
+```
+Todos esses recursos podem ser utilizados em conjunto:
+```
+isPrimary = true;
+isDisabled = false;
+customClass = null;
+
+classNames(
+  "button",
+  { "button--disabled": isDisabled, "button--primary": isPrimary },
+  customClass
+);
+// resultado: "button button--primary"
+```
+Esta biblioteca é independente do React, e pode ser usada em qualquer projeto JavaScript.
+
+# Design
+Animação *loading* utilizando *mixins.scss*
+```
+@-webkit-keyframes rotation{
+  from{-webkit-transform: rotate(0deg);}
+  from{-webkit-transform: rotate(359deg);}
+}
+@mixin rotation(){animation: rotation 2s infinite linear;}
+```
+Importe o arquivo *mixins.scss* e inclua a chamada ```@include rotation();``` na sua classe css.

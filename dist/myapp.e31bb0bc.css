@@ -40,12 +40,19 @@ body {
 .note__text {
   flex: 1;
 }
+.note__input {
+  flex: 1;
+  border-top: 0;
+  border-left: 0;
+  border-right: 0;
+  border-bottom: 1px solid #c7c7c7;
+}
 .note__button {
   background-color: transparent;
   border: 0;
   cursor: pointer;
 }
-.note--hidden {
+.note__button--hidden {
   visibility: hidden;
 }
 

@@ -28504,7 +28504,22 @@ var App = /*#__PURE__*/function (_React$Component) {
     }
 
     return _possibleConstructorReturn(_this, (_temp = _this = _super.call.apply(_super, [this].concat(args)), _this.state = {
-      notes: []
+      notes: [{
+        id: 1,
+        text: "Teste 1"
+      }, {
+        id: 2,
+        text: "Teste 2"
+      }, {
+        id: 3,
+        text: "Teste 3"
+      }, {
+        id: 4,
+        text: "Teste 4"
+      }, {
+        id: 5,
+        text: "Teste 5"
+      }]
     }, _this.handleAddNote = function (text) {
       _this.setState(function (prevState) {
         return {
@@ -28517,14 +28532,36 @@ var App = /*#__PURE__*/function (_React$Component) {
     }, _this.handleMove = function (direction, index) {
       _this.setState(function (prevState) {
         var newNotes = prevState.notes.slice();
-        var removeNotes = newNotes.splice(index, 1)[0];
+        var removedNote = newNotes.splice(index, 1)[0];
 
         if (direction === "up") {
-          newNotes.splice(index - 1, 0, removeNotes);
+          newNotes.splice(index - 1, 0, removedNote);
         } else {
-          newNotes.splice(index + 1, 0, removeNotes);
+          newNotes.splice(index + 1, 0, removedNote);
         }
 
+        return {
+          notes: newNotes
+        };
+      });
+    }, _this.handleDelete = function (id) {
+      _this.setState(function (prevState) {
+        var newNotes = prevState.notes.slice();
+        var index = newNotes.findIndex(function (note) {
+          return note.id === id;
+        });
+        newNotes.splice(index, 1);
+        return {
+          notes: newNotes
+        };
+      });
+    }, _this.handleEdit = function (id, text) {
+      _this.setState(function (prevState) {
+        var newNotes = prevState.notes.slice();
+        var index = newNotes.findIndex(function (note) {
+          return note.id === id;
+        });
+        newNotes[index].text = text;
         return {
           notes: newNotes
         };
@@ -28541,7 +28578,9 @@ var App = /*#__PURE__*/function (_React$Component) {
         onAddNote: this.handleAddNote
       }), _react.default.createElement(NoteList, {
         notes: this.state.notes,
-        onMove: this.handleMove
+        onMove: this.handleMove,
+        onDelete: this.handleDelete,
+        onEdit: this.handleEdit
       }));
     }
   }]);
@@ -28566,7 +28605,7 @@ var NewNote = /*#__PURE__*/function (_React$Component2) {
     }
 
     return _possibleConstructorReturn(_this2, (_temp2 = _this2 = _super2.call.apply(_super2, [this].concat(args)), _this2.state = {
-      text: ''
+      text: ""
     }, _temp2));
   }
 
@@ -28582,10 +28621,10 @@ var NewNote = /*#__PURE__*/function (_React$Component2) {
       }, _react.default.createElement("input", {
         type: "text",
         className: "new-note__input",
-        placeholder: "Digite sua nota",
+        placeholder: "Digite sua nota aqui...",
         value: text,
         onChange: function onChange(event) {
-          return _this3.setState({
+          _this3.setState({
             text: event.target.value
           });
         },
@@ -28594,7 +28633,7 @@ var NewNote = /*#__PURE__*/function (_React$Component2) {
             onAddNote(event.target.value);
 
             _this3.setState({
-              text: ''
+              text: ""
             });
           }
         }
@@ -28605,36 +28644,130 @@ var NewNote = /*#__PURE__*/function (_React$Component2) {
   return NewNote;
 }(_react.default.Component);
 
+var Note = /*#__PURE__*/function (_React$Component3) {
+  _inherits(Note, _React$Component3);
+
+  var _super3 = _createSuper(Note);
+
+  function Note() {
+    var _this4;
+
+    var _temp3;
+
+    _classCallCheck(this, Note);
+
+    for (var _len3 = arguments.length, args = new Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+      args[_key3] = arguments[_key3];
+    }
+
+    return _possibleConstructorReturn(_this4, (_temp3 = _this4 = _super3.call.apply(_super3, [this].concat(args)), _this4.state = {
+      isEditing: false
+    }, _this4.handleEdit = function () {
+      _this4.setState({
+        isEditing: true
+      });
+    }, _this4.handleCancel = function () {
+      _this4.setState({
+        isEditing: false
+      });
+    }, _this4.handleSave = function () {
+      _this4.props.onEdit(_this4.props.note.id, _this4.input.value);
+
+      _this4.setState({
+        isEditing: false
+      });
+    }, _temp3));
+  }
+
+  _createClass(Note, [{
+    key: "render",
+    value: function render() {
+      var _this5 = this;
+
+      var _this$props = this.props,
+          note = _this$props.note,
+          onDelete = _this$props.onDelete,
+          index = _this$props.index,
+          onMove = _this$props.onMove,
+          total = _this$props.total;
+      var isEditing = this.state.isEditing;
+      return _react.default.createElement("div", {
+        className: "note"
+      }, isEditing ? _react.default.createElement("input", {
+        type: "text",
+        className: "note__input",
+        defaultValue: note.text,
+        ref: function ref(c) {
+          _this5.input = c;
+        }
+      }) : _react.default.createElement("span", {
+        className: "note__text"
+      }, note.text), isEditing && _react.default.createElement(_react.default.Fragment, null, _react.default.createElement("button", {
+        className: "note__button note__button--red",
+        onClick: this.handleCancel
+      }, _react.default.createElement("i", {
+        className: "material-icons"
+      }, "cancel")), _react.default.createElement("button", {
+        className: "note__button note__button--green",
+        onClick: this.handleSave
+      }, _react.default.createElement("i", {
+        className: "material-icons"
+      }, "done_outline"))), _react.default.createElement("button", {
+        disabled: isEditing,
+        className: "note__button",
+        onClick: this.handleEdit
+      }, _react.default.createElement("i", {
+        className: "material-icons"
+      }, "edit")), _react.default.createElement("button", {
+        disabled: isEditing,
+        className: "note__button",
+        onClick: function onClick() {
+          onDelete(note.id);
+        }
+      }, _react.default.createElement("i", {
+        className: "material-icons"
+      }, "delete")), _react.default.createElement("button", {
+        className: (0, _classnames.default)("note__button", {
+          "note__button--hidden": index === 0
+        }),
+        onClick: function onClick() {
+          onMove("up", index);
+        }
+      }, _react.default.createElement("i", {
+        className: "material-icons"
+      }, "arrow_upward")), _react.default.createElement("button", {
+        className: (0, _classnames.default)("note__button", {
+          "note__button--hidden": index === total - 1
+        }),
+        onClick: function onClick() {
+          onMove("down", index);
+        }
+      }, _react.default.createElement("i", {
+        className: "material-icons"
+      }, "arrow_downward")));
+    }
+  }]);
+
+  return Note;
+}(_react.default.Component);
+
 var NoteList = function NoteList(_ref) {
   var notes = _ref.notes,
-      onMove = _ref.onMove;
+      onMove = _ref.onMove,
+      onDelete = _ref.onDelete,
+      onEdit = _ref.onEdit;
   return _react.default.createElement("div", {
     className: "note-list"
   }, notes.map(function (note, index) {
-    return _react.default.createElement("div", {
+    return _react.default.createElement(Note, {
       key: note.id,
-      className: "note"
-    }, _react.default.createElement("span", {
-      className: "note__text"
-    }, note.text), _react.default.createElement("button", {
-      className: (0, _classnames.default)("note__button", {
-        "note__button--hidden": index === 0
-      }),
-      onClick: function onClick() {
-        onMove("up", index);
-      }
-    }, _react.default.createElement("span", {
-      "class": "material-icons"
-    }, "keyboard_arrow_up")), _react.default.createElement("button", {
-      className: (0, _classnames.default)("note__button", {
-        "note__button--hidden": index === notes.length - 1
-      }),
-      onClick: function onClick() {
-        onMove("down", index);
-      }
-    }, _react.default.createElement("span", {
-      "class": "material-icons"
-    }, "keyboard_arrow_down")));
+      note: note,
+      onEdit: onEdit,
+      onDelete: onDelete,
+      index: index,
+      onMove: onMove,
+      total: notes.length
+    });
   }));
 };
 
@@ -28667,7 +28800,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50173" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50325" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
